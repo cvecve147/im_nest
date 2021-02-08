@@ -5,6 +5,11 @@ import { hashSync } from 'bcryptjs';
 
 export type UserDoc = DocumentType<User>;
 
+export enum UserRole {
+  ROOT = 'root',
+  ADMIN = 'admin',
+  USER = 'user',
+}
 @modelOptions({
   schemaOptions: {
     timestamps: true,

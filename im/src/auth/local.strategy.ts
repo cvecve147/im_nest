@@ -25,6 +25,7 @@ export class LocalStrategy extends PassportStrategy(Strategy, 'local') {
       throw new BadRequestException('不存在2');
     }
     delete user.password;
+
     return user;
   }
 }
