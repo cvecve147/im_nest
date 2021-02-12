@@ -86,8 +86,6 @@ export class AuthController {
   @ApiOperation({ summary: '登入' })
   @UseGuards(AuthGuard('local'))
   async login(@Body() dto: Dto, @CurrentUser() user: UserDoc) {
-    console.log(user._id);
-
     return {
       token: this.jwtService.sign(String(user._id)),
     };

@@ -59,22 +59,21 @@
 export default {
   data() {
     return {
-      message: "",
       file: "",
       loading: false,
-      repeat: []
-    };
+      repeat: [],
+    }
   },
   methods: {
     handleFilesUpload() {
-      this.file = this.$refs.file.files[0];
+      this.file = this.$refs.file.files[0]
     },
     async submit() {
-      let formData = new FormData();
-      formData.append("file", this.file);
-      await this.$http.post("users/upload/upload", formData);
-    }
-  }
-};
+      let formData = new FormData()
+      formData.append("file", this.file)
+      await this.$http.post("users/upload/upload", formData)
+    },
+  },
+}
 </script>
 <style></style>

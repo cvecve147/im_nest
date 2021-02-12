@@ -193,7 +193,6 @@ export default {
   data() {
     return {
       search: "",
-      message: "",
       user: {},
     }
   },
