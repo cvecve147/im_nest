@@ -283,9 +283,17 @@ export default {
       try {
         await this.$http.delete("user/" + val._id)
         await this.fetch()
-        this.message = "刪除成功"
+        this.$message({
+          showClose: true,
+          message: "刪除成功",
+          type: "success",
+        })
       } catch (error) {
-        this.message = "權限不足 請重新登入"
+        this.$message({
+          showClose: true,
+          message: "權限不足 請重新登入",
+          type: "error",
+        })
         this.$router.push("logout")
       }
     },

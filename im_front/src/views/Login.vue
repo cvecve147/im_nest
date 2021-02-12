@@ -59,41 +59,49 @@ export default {
       message: "",
       data: {
         name: "",
-        password: "",
-      },
-    }
+        password: ""
+      }
+    };
   },
   methods: {
     async login() {
-      this.data.name = this.data.name.trim()
-      this.data.password = this.data.password.trim()
+      this.data.name = this.data.name.trim();
+      this.data.password = this.data.password.trim();
       if (this.data.name == "" || this.data.password == "") {
-        alert("請輸入姓名與密碼")
-        return
+        alert("請輸入姓名與密碼");
+        return;
       }
       try {
-        const res = await this.$http.post("login", this.data)
-        this.message = "登入成功"
-        localStorage.removeItem("token")
-        const token = await res.data.token
-        await localStorage.setItem("token", token)
+        const res = await this.$http.post("login", this.data);
+        this.$message({
+          showClose: true,
+          message: "登入成功",
+          type: "success"
+        });
+        localStorage.removeItem("token");
+        const token = await res.data.token;
+        await localStorage.setItem("token", token);
         this.$http.defaults.headers.common["Authorization"] =
-          (await "Bearer ") + localStorage.getItem("token")
-        const res2 = await this.$http.get("user")
-        localStorage.setItem("user", JSON.stringify(res2.data))
+          (await "Bearer ") + localStorage.getItem("token");
+        const res2 = await this.$http.get("user");
+        localStorage.setItem("user", JSON.stringify(res2.data));
         switch (res2.data.power) {
           case "user":
-            this.$router.push("Edit")
-            break
+            this.$router.push("Edit");
+            break;
           default:
-            break
+            break;
         }
-        this.$router.push("/")
+        this.$router.push("/");
       } catch (error) {
-        this.message = "登入失敗  帳號或密碼錯誤"
+        this.$message({
+          showClose: true,
+          message: "登入失敗  帳號或密碼錯誤",
+          type: "error"
+        });
       }
-    },
-  },
-}
+    }
+  }
+};
 </script>
 <style></style>

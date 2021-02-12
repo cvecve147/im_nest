@@ -11,41 +11,41 @@
   </div>
 </template>
 <script>
-import Tables from "../components/Table"
+import Tables from "../components/Table";
 export default {
   data() {
     return {
       search: "",
       PersonData: [],
-      loading: false,
-    }
+      loading: false
+    };
   },
   components: {
-    Tables,
+    Tables
   },
   computed: {},
   methods: {
     async fetchQuery() {
       try {
-        this.loading = true
-        const user = JSON.parse(localStorage.getItem("user"))
+        this.loading = true;
+        const user = JSON.parse(localStorage.getItem("user"));
         if (user.power && user.power != "user") {
-          const res = await this.$http.get("users")
-          this.PersonData = res.data
-          this.loading = false
+          const res = await this.$http.get("users");
+          this.PersonData = res.data;
+          this.loading = false;
         } else {
-          this.$router.push("/Edit")
+          this.$router.push("/Edit");
         }
       } catch (error) {
-        this.$router.push("/login")
+        this.$router.push("/login");
       }
-    },
+    }
   },
   async created() {
     if (localStorage.getItem("token") != null) {
-      await this.fetchQuery()
+      await this.fetchQuery();
     }
-  },
-}
+  }
+};
 </script>
 <style></style>

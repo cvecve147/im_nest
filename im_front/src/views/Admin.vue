@@ -9,32 +9,32 @@
   </div>
 </template>
 <script>
-import Tables from "../components/Table"
+import Tables from "../components/Table";
 export default {
   data() {
     return {
       AdminData: [],
-      loading: false,
-    }
+      loading: false
+    };
   },
   components: {
-    Tables,
+    Tables
   },
   methods: {
     async fetchQuery() {
-      this.loading = true
+      this.loading = true;
       try {
-        const res = await this.$http.get("manager")
-        this.AdminData = res.data
-        this.loading = false
+        const res = await this.$http.get("manager");
+        this.AdminData = res.data;
+        this.loading = false;
       } catch (error) {
-        this.$router.push("logout")
+        this.$router.push("logout");
       }
-    },
+    }
   },
   async created() {
-    await this.fetchQuery()
-  },
-}
+    await this.fetchQuery();
+  }
+};
 </script>
 <style></style>

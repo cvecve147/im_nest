@@ -94,33 +94,41 @@
 <script>
 export default {
   props: {
-    admin: String,
+    admin: String
   },
   data() {
     return {
       data: {},
-      message: "",
-    }
+      message: ""
+    };
   },
   methods: {
     async create() {
       try {
-        const res = await this.$http.post("users", this.data)
+        const res = await this.$http.post("users", this.data);
         if (res.data != "重複資料") {
-          this.message = "重複資料"
+          this.$message({
+            showClose: true,
+            message: "重複資料",
+            type: "warning"
+          });
         } else {
-          this.message = "創建成功" + res.data.name
+          this.$message({
+            showClose: true,
+            message: "創建成功" + res.data.name,
+            type: "success"
+          });
         }
         if (this.admin) {
-          this.$router.push("/admin")
+          this.$router.push("/admin");
         } else {
-          this.$router.push("/")
+          this.$router.push("/");
         }
       } catch (error) {
-        return
+        return;
       }
-    },
-  },
-}
+    }
+  }
+};
 </script>
 <style></style>

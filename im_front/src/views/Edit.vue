@@ -91,12 +91,12 @@
   </div>
 </template>
 <script>
-import headers from "@/components/Header.vue"
+import headers from "@/components/Header.vue";
 export default {
   data() {
     return {
       user: {
-        industry_other: "",
+        industry_other: ""
       },
       industrys: [
         "資訊軟體業",
@@ -106,24 +106,24 @@ export default {
         "傳統製造業",
         "電商平台",
         "網路行銷",
-        "其他",
+        "其他"
       ],
-      message: "",
-    }
+      message: ""
+    };
   },
   components: {
-    headers,
+    headers
   },
   methods: {
     async fetch() {
       try {
-        this.user = JSON.parse(localStorage.getItem("user"))
-        const insplit = this.user.industry.split("_")
+        this.user = JSON.parse(localStorage.getItem("user"));
+        const insplit = this.user.industry.split("_");
 
-        this.user.industry = insplit[0]
-        this.user.industry_other = insplit[1]
+        this.user.industry = insplit[0];
+        this.user.industry_other = insplit[1];
       } catch (e) {
-        this.$router.push("login")
+        this.$router.push("login");
       }
     },
     async save() {
@@ -135,16 +135,16 @@ export default {
           item != "industry_other" &&
           item != "__v"
         )
-          this.user[item] = this.user[item].trim()
+          this.user[item] = this.user[item].trim();
       }
       if (this.user.industry != "其他") {
-        this.user.industry_other = ""
+        this.user.industry_other = "";
       }
       if (this.user.management == "false") {
-        this.user.management = false
+        this.user.management = false;
       }
       if (this.user.management == "true") {
-        this.user.management = true
+        this.user.management = true;
       }
       if (
         this.user.address == "" ||
@@ -153,33 +153,37 @@ export default {
         this.user.position == "" ||
         (this.user.industry == "其他" && this.user.industry_other == "")
       ) {
-        alert("請填寫後儲存")
-        return
+        alert("請填寫後儲存");
+        return;
       }
 
       if (this.user.industry == "其他" && this.user.industry_other != "") {
-        this.user.industry = "其他_" + this.user.industry_other
+        this.user.industry = "其他_" + this.user.industry_other;
       }
-      delete this.user.industry_other
+      delete this.user.industry_other;
       try {
-        await this.$http.put(`/`, this.user)
+        await this.$http.put(`/`, this.user);
       } catch (error) {
-        this.$router.push("logout")
+        this.$router.push("logout");
       }
-      const res2 = await this.$http.get("user")
-      localStorage.setItem("user", JSON.stringify(res2.data))
-      await this.fetch()
-      this.message = "儲存成功"
-    },
+      const res2 = await this.$http.get("user");
+      localStorage.setItem("user", JSON.stringify(res2.data));
+      await this.fetch();
+      this.$message({
+        showClose: true,
+        message: "儲存成功",
+        type: "success"
+      });
+    }
   },
 
   async created() {
-    const token = localStorage.getItem("token")
+    const token = localStorage.getItem("token");
     if (token === null || token == undefined) {
-      this.$router.push("login")
+      this.$router.push("login");
     }
-    await this.fetch()
-  },
-}
+    await this.fetch();
+  }
+};
 </script>
 <style></style>
