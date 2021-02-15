@@ -117,7 +117,7 @@
             <tr v-for="item in filers" :key="item.id" class="m-2">
               <td
                 class="px-6 py-4 whitespace-no-wrap border-b border-gray-500"
-                v-for="(i, index) in filers[0]"
+                v-for="index in indexs"
                 :key="index"
                 :class="{
                   hidden:
@@ -178,9 +178,9 @@ export default {
         if (this.datapath == "admin") {
           tag = ["name"]
         } else {
-          tag = ["name", "industry", "power", "position"]
+          tag = ["name", "industry", "position", "level"]
         }
-        var find = true
+        var find = false
         tag.forEach((el) => {
           if (user[el].toLowerCase().indexOf(this.search.toLowerCase()) != -1) {
             find = true
@@ -194,6 +194,7 @@ export default {
     return {
       search: "",
       user: {},
+      indexs: [],
     }
   },
   props: {
@@ -234,7 +235,7 @@ export default {
         if (this.datapath == "admin") {
           tag = ["name"]
         } else {
-          tag = ["name", "industry", "power", "position"]
+          tag = ["name", "industry", "position", "level"]
         }
         var find = false
         tag.forEach((el) => {
@@ -298,6 +299,25 @@ export default {
     },
   },
   created() {
+    if (this.datapath == "admin") {
+      this.indexs = ["name", "power"]
+    } else {
+      this.indexs = [
+        "name",
+        "address",
+        "industry",
+        "level",
+        "management",
+        "phoneNumber",
+        "position",
+        "power",
+        "createdAt",
+        "updatedAt",
+        "__v",
+        "_id",
+      ]
+    }
+
     this.user = JSON.parse(localStorage.getItem("user"))
   },
 }

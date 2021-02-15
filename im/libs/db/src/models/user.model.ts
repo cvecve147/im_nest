@@ -33,22 +33,22 @@ export class User {
   })
   password: string;
 
-  @prop()
+  @prop({ default: '' })
   phoneNumber: string;
 
-  @prop()
+  @prop({ default: '' })
   address: string;
 
-  @prop()
+  @prop({ default: '' })
   level: string;
 
-  @prop()
+  @prop({ default: '' })
   industry: string;
 
-  @prop()
+  @prop({ default: '' })
   position: string;
 
-  @prop()
+  @prop({ default: false })
   management: boolean;
 
   @ApiProperty({ example: 'user1' })

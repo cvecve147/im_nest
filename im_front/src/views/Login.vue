@@ -8,9 +8,6 @@
           系友資訊系統登入
         </h3>
       </div>
-      <div>
-        <span class="text-red-600">{{ message }}</span>
-      </div>
       <div class="mb-6 ">
         <label
           class="block text-grey-darker text-sm font-bold mb-2"

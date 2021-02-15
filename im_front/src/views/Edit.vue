@@ -10,9 +10,6 @@
             更新個人資料
           </h3>
         </div>
-        <div>
-          <span class="text-red-600">{{ message }}</span>
-        </div>
         <div class="mb-6 ">
           <label class="block text-grey-darker text-sm font-bold mb-2">
             通訊地址

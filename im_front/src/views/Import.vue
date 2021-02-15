@@ -9,9 +9,6 @@
             匯入用戶資料
           </h3>
         </div>
-        <div>
-          <span class="text-red-600">{{ message }}</span>
-        </div>
         <div class="mb-6 ">
           <div class="flex w-full  items-center justify-center bg-grey-lighter">
             <label
@@ -50,9 +47,7 @@
         </div>
       </div>
     </div>
-    <div v-else>
-      載入中
-    </div>
+    <div v-else class="loader"></div>
   </div>
 </template>
 <script>
@@ -71,7 +66,13 @@ export default {
     async submit() {
       let formData = new FormData()
       formData.append("file", this.file)
-      await this.$http.post("users/upload/upload", formData)
+      await this.$http.post("upload", formData)
+      this.$message({
+        showClose: true,
+        message: "上傳成功",
+        type: "success",
+      })
+      this.$router.push("/")
     },
   },
 }

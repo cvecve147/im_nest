@@ -10,6 +10,8 @@ import {
   Query,
   Req,
   UseGuards,
+  UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
@@ -17,12 +19,14 @@ import {
   ApiProperty,
   ApiTags,
 } from '@nestjs/swagger';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { DocumentType, ReturnModelType } from '@typegoose/typegoose';
 import { InjectModel } from 'nestjs-typegoose';
 import { AuthGuard } from '@nestjs/passport';
 import { JwtService } from '@nestjs/jwt';
 import { CurrentUser } from './current-user.decorator';
 import { query } from 'express';
+import { readFile, utils } from 'xlsx';
 
 export class Dto {
   @ApiProperty()
@@ -57,6 +61,44 @@ export class AuthController {
     private jwtService: JwtService,
     @InjectModel(User) private userModel: ReturnModelType<typeof User>,
   ) {}
+
+  @Post('upload')
+  @ApiOperation({ summary: '匯入' })
+  @UseGuards(AuthGuard('jwt-root'))
+  @ApiBearerAuth()
+  @UseInterceptors(
+    FileInterceptor('file', {
+      dest: './uploads',
+    }),
+  )
+  async upload(@UploadedFile() file) {
+    console.log('uploads');
+
+    const res = readFile(file.path);
+    const first_worksheet = res.Sheets[res.SheetNames[0]];
+    const data = utils.sheet_to_json(first_worksheet, { header: 1 });
+    const transData = [];
+    const Users = await this.userModel.find({ power: 'user' });
+    const UserList = [];
+    Users.forEach((el) => {
+      UserList.push(el.name);
+    });
+    for (let i = 0; i < data.length; i++) {
+      var el = data[i];
+
+      const user = new User();
+      user.name = el[0] ? el[0] : '';
+      user.password = String(el[1]) ? String(el[1]) : '';
+      user.address = el[2] ? el[2] : '';
+      user.phoneNumber = el[3] ? el[3] : '';
+      user.level = el[4] ? el[4] : '';
+      user.power = UserRole.USER;
+      if (user.name != '學號' && UserList.indexOf(user.name) == -1) {
+        transData.push(user);
+      }
+    }
+    return await this.userModel.create(transData);
+  }
 
   @Post('users')
   @ApiOperation({ summary: '註冊' })

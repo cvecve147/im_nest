@@ -9,9 +9,6 @@
             更新{{ user.name }}資料
           </h3>
         </div>
-        <div>
-          <span class="text-red-600">{{ message }}</span>
-        </div>
         <div
           class="mb-6 "
           v-for="(item, index) in user"
@@ -48,9 +45,7 @@
         </div>
       </div>
     </div>
-    <div v-else>
-      載入中
-    </div>
+    <div v-else class="loader"></div>
   </div>
 </template>
 <script>

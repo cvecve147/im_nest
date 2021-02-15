@@ -9,9 +9,6 @@
             創建{{ admin == 1 ? "管理員" : "用戶" }}
           </h3>
         </div>
-        <div>
-          <span class="text-red-600">{{ message }}</span>
-        </div>
         <div class="mb-6 ">
           <label
             class="block text-grey-darker text-sm font-bold mb-2"
@@ -94,41 +91,42 @@
 <script>
 export default {
   props: {
-    admin: String
+    admin: String,
   },
   data() {
     return {
       data: {},
-      message: ""
-    };
+      message: "",
+    }
   },
   methods: {
     async create() {
       try {
-        const res = await this.$http.post("users", this.data);
+        const res = await this.$http.post("users", this.data)
         if (res.data != "重複資料") {
           this.$message({
             showClose: true,
-            message: "重複資料",
-            type: "warning"
-          });
+            message: "創建成功" + res.data.name,
+            type: "success",
+          })
         } else {
           this.$message({
             showClose: true,
-            message: "創建成功" + res.data.name,
-            type: "success"
-          });
+            message: "重複資料",
+            type: "warning",
+          })
         }
-        if (this.admin) {
-          this.$router.push("/admin");
+
+        if (this.admin == "0") {
+          this.$router.push("/")
         } else {
-          this.$router.push("/");
+          this.$router.push("/admin")
         }
       } catch (error) {
-        return;
+        return
       }
-    }
-  }
-};
+    },
+  },
+}
 </script>
 <style></style>
