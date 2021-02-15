@@ -146,9 +146,11 @@ export class AuthController {
   @UseGuards(AuthGuard('jwt-R&A'))
   @ApiBearerAuth()
   async users(@CurrentUser() user: DocumentType<User[]>) {
-    return await this.userModel.find({
-      $or: [{ power: UserRole.USER }],
-    });
+    return await this.userModel
+      .find({
+        $or: [{ power: UserRole.USER }],
+      })
+      .sort({ name: 1 });
   }
 
   @Get('manager')
