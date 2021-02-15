@@ -88,10 +88,10 @@ export class AuthController {
 
       const user = new User();
       user.name = el[0] ? el[0] : '';
-      user.password = String(el[1]) ? String(el[1]) : '';
-      user.address = el[2] ? el[2] : '';
-      user.phoneNumber = el[3] ? el[3] : '';
-      user.level = el[4] ? el[4] : '';
+      user.password = el[1] ? String(el[1]) : '';
+      user.address = el[2] ? String(el[2]) : '';
+      user.phoneNumber = el[3] ? String(el[3]) : '';
+      user.level = el[4] ? String(el[4]) : '';
       user.power = UserRole.USER;
       if (user.name != '學號' && UserList.indexOf(user.name) == -1) {
         transData.push(user);

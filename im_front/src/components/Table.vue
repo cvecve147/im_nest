@@ -91,7 +91,7 @@
             <tr>
               <th
                 class="px-6 py-3 border-b-2 border-gray-300 text-center leading-4 text-blue-500 tracking-wider"
-                v-for="(i, index) in data[0]"
+                v-for="index in indexs"
                 :key="index"
                 :class="{
                   hidden:
@@ -304,12 +304,12 @@ export default {
     } else {
       this.indexs = [
         "name",
+        "phoneNumber",
         "address",
         "industry",
         "level",
-        "management",
-        "phoneNumber",
         "position",
+        "management",
         "power",
         "createdAt",
         "updatedAt",
