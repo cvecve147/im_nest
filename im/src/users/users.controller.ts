@@ -5,7 +5,6 @@ import { Crud } from 'nestjs-mongoose-crud';
 import { model } from 'mongoose';
 import { ApiTags } from '@nestjs/swagger';
 
-@Crud({ model: User })
 @Controller('users')
 @ApiTags('用戶')
 export class UsersController {
