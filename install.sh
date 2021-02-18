@@ -1,1 +1,1 @@
-yay -Sy code nodejs-lts-erbium
+npm i -g @vue/cli pm2
