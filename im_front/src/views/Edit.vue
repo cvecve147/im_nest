@@ -4,8 +4,64 @@
     <div class="container  mx-auto justify-center flex w-100">
       <div
         class="bg-white shadow-2xl rounded px-8 pt-6 pb-8 mb-4 flex flex-col mt-60 w-1/2"
+        v-if="!edit"
       >
-        <div>
+        <div class="d-flex flex-col">
+          <h3 class="text-grey-darker text-2xl  my-5 font-semibold">
+            個人資料
+          </h3>
+        </div>
+        <div class="mb-6 ">
+          <div class="flex flex-row my-4 pl-5 ">
+            <label class="block text-grey-darker text-md font-bold mb-2">
+              通訊地址 : &nbsp;
+            </label>
+            <span class="text-md ml-2">{{ user.address }}</span>
+          </div>
+          <div class="flex flex-row my-4 pl-5 ">
+            <label class="block text-grey-darker text-md font-bold mb-2">
+              手機號碼 : &nbsp;
+            </label>
+            <span class="text-md ml-2">{{ user.phoneNumber }}</span>
+          </div>
+          <div class="flex flex-row my-4 pl-5 ">
+            <label class="block text-grey-darker text-md font-bold mb-2">
+              工作產業 : &nbsp;
+            </label>
+            <span class="text-md ml-2">{{ user.industry }}</span>
+          </div>
+
+          <div class="flex flex-row my-4 pl-5 ">
+            <label class="block text-grey-darker text-md font-bold mb-2">
+              工作職位 : &nbsp;
+            </label>
+            <span class="text-md ml-2">{{ user.position }}</span>
+          </div>
+
+          <div class="flex flex-row my-4 pl-5">
+            <label class="block text-grey-darker text-md font-bold mb-2">
+              工作類別 : &nbsp;
+            </label>
+            <span class="text-md ml-2 flex justify-center w-max">{{
+              user.management ? "管理" : "非管理"
+            }}</span>
+          </div>
+        </div>
+        <div class="flex justify-center ">
+          <button
+            class="bg-blue hover:bg-blue-dark text-blue-500 font-bold py-2 px-4 rounded"
+            type="button"
+            @click="edit = !edit"
+          >
+            編輯
+          </button>
+        </div>
+      </div>
+      <div
+        class="bg-white shadow-2xl rounded px-8 pt-6 pb-8 mb-4 flex flex-col mt-60 w-1/2"
+        v-else
+      >
+        <div class="d-flex flex-col">
           <h3 class="text-grey-darker text-2xl  my-5 font-semibold">
             更新個人資料
           </h3>
@@ -44,6 +100,7 @@
             v-model="user.industry_other"
             v-if="user.industry == '其他'"
           />
+
           <label class="block text-grey-darker text-sm font-bold mb-2">
             工作職位
           </label>
@@ -88,13 +145,14 @@
   </div>
 </template>
 <script>
-import headers from "@/components/Header.vue";
+import headers from "@/components/Header.vue"
 export default {
   data() {
     return {
       user: {
-        industry_other: ""
+        industry_other: "",
       },
+      edit: false,
       industrys: [
         "資訊軟體業",
         "高科技製造業",
@@ -103,24 +161,24 @@ export default {
         "傳統製造業",
         "電商平台",
         "網路行銷",
-        "其他"
+        "其他",
       ],
-      message: ""
-    };
+      message: "",
+    }
   },
   components: {
-    headers
+    headers,
   },
   methods: {
     async fetch() {
       try {
-        this.user = JSON.parse(localStorage.getItem("user"));
-        const insplit = this.user.industry.split("_");
+        this.user = JSON.parse(localStorage.getItem("user"))
+        const insplit = this.user.industry.split("_")
 
-        this.user.industry = insplit[0];
-        this.user.industry_other = insplit[1];
+        this.user.industry = insplit[0]
+        this.user.industry_other = insplit[1]
       } catch (e) {
-        this.$router.push("login");
+        this.$router.push("login")
       }
     },
     async save() {
@@ -132,16 +190,16 @@ export default {
           item != "industry_other" &&
           item != "__v"
         )
-          this.user[item] = this.user[item].trim();
+          this.user[item] = this.user[item].trim()
       }
       if (this.user.industry != "其他") {
-        this.user.industry_other = "";
+        this.user.industry_other = ""
       }
       if (this.user.management == "false") {
-        this.user.management = false;
+        this.user.management = false
       }
       if (this.user.management == "true") {
-        this.user.management = true;
+        this.user.management = true
       }
       if (
         this.user.address == "" ||
@@ -150,37 +208,38 @@ export default {
         this.user.position == "" ||
         (this.user.industry == "其他" && this.user.industry_other == "")
       ) {
-        alert("請填寫後儲存");
-        return;
+        alert("請填寫後儲存")
+        return
       }
 
       if (this.user.industry == "其他" && this.user.industry_other != "") {
-        this.user.industry = "其他_" + this.user.industry_other;
+        this.user.industry = "其他_" + this.user.industry_other
       }
-      delete this.user.industry_other;
+      delete this.user.industry_other
       try {
-        await this.$http.put(`/`, this.user);
+        await this.$http.put(`/`, this.user)
       } catch (error) {
-        this.$router.push("logout");
+        this.$router.push("logout")
       }
-      const res2 = await this.$http.get("user");
-      localStorage.setItem("user", JSON.stringify(res2.data));
-      await this.fetch();
+      const res2 = await this.$http.get("user")
+      localStorage.setItem("user", JSON.stringify(res2.data))
+      await this.fetch()
       this.$message({
         showClose: true,
         message: "儲存成功",
-        type: "success"
-      });
-    }
+        type: "success",
+      })
+      this.edit = false
+    },
   },
 
   async created() {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("token")
     if (token === null || token == undefined) {
-      this.$router.push("login");
+      this.$router.push("login")
     }
-    await this.fetch();
-  }
-};
+    await this.fetch()
+  },
+}
 </script>
 <style></style>
